@@ -29,9 +29,14 @@ pipeline {
             }
             steps{
                 sh ''' 
+                    #installs server software dependency
                     npm install serve 
-                    node_modules/.bin/serve -s build
-                    npx playwright test
+                    # & makes the server run in the background without affecting other commands
+                    node_modules/.bin/serve -s build & 
+                     #sleeps for 10 seconds before running tests so the server has enough time to start
+                    sleep 10
+                    #Performs tests on the running application
+                    npx playwright test 
                 '''
             }
         }
