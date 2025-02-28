@@ -51,7 +51,7 @@ pipeline {
                      #sleeps for 10 seconds before running tests so the server has enough time to start
                     sleep 10
                     #Performs tests on the running application
-                    npx playwright test 
+                    npx playwright test --reporter=html
                 '''
             }
         }
