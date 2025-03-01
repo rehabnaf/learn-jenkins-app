@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        commitsha = "${env.GIT_COMMIT}" // Define commit SHA (unique id of last github commit) globally
+    }
 
     stages {
         stage('Build') {
@@ -76,10 +79,9 @@ pipeline {
         success {
             script {
                 echo "Sending 'success' status to GitHub"
-                def commitSha = "${env.GIT_COMMIT}"
-                echo "The commit SHA is: ${commitSha}"
+                echo "The commit SHA is: ${env.commitSha}"
                 def response = httpRequest(
-                    url: "https://api.github.com/repos/rehabnaf/learn-jenkins-app/statuses/${commitSha}",
+                    url: "https://api.github.com/repos/rehabnaf/learn-jenkins-app/statuses/${env.commitSha}",
                     httpMode: 'POST',
                     contentType: 'APPLICATION_JSON',
                     requestBody: """{
@@ -97,10 +99,9 @@ pipeline {
         failure {
             script {
                 echo "Sending 'failure' status to GitHub"
-                def commitSha = "${env.GIT_COMMIT}"
-                echo "The commit SHA is: ${commitSha}"
+                echo "The commit SHA is: ${env.commitSha}"
                 def response = httpRequest(
-                    url: "https://api.github.com/repos/rehabnaf/learn-jenkins-app/statuses/${commitSha}",
+                    url: "https://api.github.com/repos/rehabnaf/learn-jenkins-app/statuses/${env.commitSha}",
                     httpMode: 'POST',
                     contentType: 'APPLICATION_JSON',
                     requestBody: """{
@@ -116,7 +117,7 @@ pipeline {
         }
 
         always {
-            echo "Pipeline finished. Commit SHA: ${commitSha}"
+            echo "Pipeline finished. Commit SHA: ${env.commitSha}"
         }
     }
    // Testing build
