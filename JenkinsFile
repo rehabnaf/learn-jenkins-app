@@ -100,7 +100,7 @@ pipeline {
                 def commitSha = "${env.GIT_COMMIT}"
                 echo "The commit SHA is: ${commitSha}"
                 def response = httpRequest(
-                    url: "https://api.github.com/repos/your-repo/project/statuses/${commitSha}",
+                    url: "https://api.github.com/repos/rehabnaf/learn-jenkins-app/statuses/${commitSha}",
                     httpMode: 'POST',
                     contentType: 'APPLICATION_JSON',
                     requestBody: """{
